@@ -1,52 +1,42 @@
 const express = require('express');
 const app = express();
-
 app.use(express.json());
-
 app.post('/bfhl', (req, res) => {
-  const data = req.body.data;
-
-  if (!Array.isArray(data)) {
-    return res.status(400).json({ error: 'Invalid data format. Data should be an array.' });
-  }
-
-  const oddNumbers = [];
+  const { data} = req.body;
+  const name="khitish";
+  const dob="10032002";
+  const email="khitish1740.be21@chitkara.edu.in";
+  const roll_number="2110991740";
+  const userId = `${name}_${dob}`;
+  const is_success = true;
   const evenNumbers = [];
+  const oddNumbers = [];
   const alphabets = [];
-  const userId = '';
-  const email = '';
-  const rollNumber = '';
-
-  data.forEach(item => {
-    if (typeof item === 'number') {
-      if (item % 2 === 0) {
-        evenNumbers.push(`${item}`);
+  for (let num of data) {
+    if (typeof num === 'number') {
+      if (num % 2 === 0) {
+        evenNumbers.push(num);
       } else {
-        oddNumbers.push(`${item}`);
+        oddNumbers.push(num);
       }
-    } else if (typeof item === 'string') {
-      if (/^[a-zA-Z]+$/.test(item)) {
-        alphabets.push(item.toUpperCase());
-      } else {
-        return res.status(400).json({ error: 'Invalid data format. Data should contain only numbers and alphabets.' });
-      }
-    } else {
-      return res.status(400).json({ error: 'Invalid data format. Data should contain only numbers and alphabets.' });
+    } else if (typeof num === 'string') {
+      alphabets.push(num.toUpperCase());
     }
-  });
-
-  const user = {
-    user_id: `john_doe_17091999`,
-    email: `john@xyz.com`,
-    roll_number: `ABCD123`,
-    odd_numbers: oddNumbers,
+  }
+  const response = {
+    user_id: userId,
+    is_success,
+    email,
+    roll_number,
     even_numbers: evenNumbers,
-    alphabets: alphabets
+    odd_numbers: oddNumbers,
+    alphabets
   };
-
-  res.json({ is_success: true, ...user });
+  res.status(200).json(response);
 });
-
-app.listen(3000, () => {
-  console.log('Server is running on port 3000');
+app.get('/',(req,res)=>{
+  res.send("<h1>Hello World</h1>");
+})
+app.listen(3000,()=>{
+  console.log("server is running on port 3000");
 });
